@@ -11,7 +11,7 @@
 
     let ctx = canvas.getContext("2d");
     let snake = new Snake(ctx, canvas.width, canvas.height);
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "lightgreen";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
@@ -28,8 +28,5 @@
         snake.move(lastMove);
         snake.checkForCollisions(intervalId);
         snake._drawBody();
-
-    }, 200);
-
-
+    }, 100);
 }   

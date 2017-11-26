@@ -72,12 +72,12 @@ class Snake {
     }
 
     _drawPart(x, y) {
-        this.ctx.fillStyle = "lightblue";
+        this.ctx.fillStyle = "blue";
         this.ctx.fillRect(x, y, this.partSize, this.partSize);
     }
 
     _clearPart(x, y) {
-        this.ctx.fillStyle = "green";
+        this.ctx.fillStyle = "lightgreen";
         this.ctx.fillRect(x, y, this.partSize, this.partSize);
     }
 
