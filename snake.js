@@ -37,9 +37,27 @@ class Snake {
         this.body.pushfront(newHead);
     }
 
-    checkForCollisions(){
+    checkForCollisions(intervalId) {
+        let head = this.body.head;
         //check if snake body collides with itself
-        //check if snake hits the wall
+        for (let index = 0; index < this.body.body.length; index++) {
+            if (index == 0) {
+                //skip head
+                continue;
+            }
+            const bodyPart = this.body.body[index];
+            if (bodyPart[0] == head[0] && bodyPart[1] == head[1]) {
+                clearInterval(intervalId);
+            }
+        }
+
+        //wall crash
+        if (head[0] > this.canvasWidth //- this.partSize     //right wall x>=max-size
+            || head[1] > this.canvasHeight// - this.partSize //down wall  y>=max-size
+            || head[0] < 0 //left wall  x<=0+size
+            || head[1] < 0 //up wall    y<=0+size
+        )
+            clearInterval(intervalId);
     }
 
     _drawBody() {

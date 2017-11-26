@@ -1,6 +1,6 @@
 {
     'use strict';
-    
+
     //init canvas
     let canvasDiv = document.getElementById("game-board");
     let canvas = document.createElement("canvas");
@@ -17,23 +17,19 @@
 
     let lastMove = MoveEnum.RIGHT;
     window.addEventListener("keydown", key => {
-        if (key.code == "ArrowLeft") lastMove = MoveEnum.LEFT;
-        if (key.code == "ArrowRight") lastMove = MoveEnum.RIGHT;
-        if (key.code == "ArrowUp") lastMove = MoveEnum.UP;
-        if (key.code == "ArrowDown") lastMove = MoveEnum.DOWN;
+        if (key.code == "ArrowLeft") lastMove = lastMove == MoveEnum.RIGHT ? MoveEnum.RIGHT : MoveEnum.LEFT;
+        if (key.code == "ArrowRight") lastMove = lastMove == MoveEnum.LEFT ? MoveEnum.LEFT : MoveEnum.RIGHT;
+        if (key.code == "ArrowUp") lastMove = lastMove == MoveEnum.DOWN ? MoveEnum.DOWN : MoveEnum.UP;
+        if (key.code == "ArrowDown") lastMove = lastMove == MoveEnum.UP ? MoveEnum.UP : MoveEnum.DOWN;
         var z = 0;
     }, false);
 
     let intervalId = setInterval(() => {
-        // if (head[0] >= this.width - this.partSize || head[1] >= this.height - this.partSize) {
-        //     console.log("wall crash");
-        //     clearInterval(intervalId);
-        // }
         snake.move(lastMove);
-
+        snake.checkForCollisions(intervalId);
         snake._drawBody();
 
     }, 200);
 
-   
- }   
+
+}   
