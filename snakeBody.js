@@ -2,20 +2,21 @@
 class SnakeBody {
     constructor() {
         this.head = [0, 0];
-        this.tail = [0, 0];
         this.body = new Array();
-        this.forRemove = new Array();
+        this.forClear = new Array();
+    }
+
+    undoRemove() {
+        this.pushback(this.forClear.pop());
     }
 
     popback() {
-        //todo set tail
         let oldTail = this.body.pop();
-        this.forRemove.push(oldTail);
+        this.forClear.push(oldTail);
         return oldTail;
     }
 
     pushback(item) {
-        //todo set tail        
         this.body.push(item);
     }
 

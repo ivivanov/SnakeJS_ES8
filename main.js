@@ -4,15 +4,17 @@
     //init canvas
     let canvasDiv = document.getElementById("game-board");
     let canvas = document.createElement("canvas");
-    let snakePartSize = 20;
-    canvas.width = snakePartSize * 35;
-    canvas.height = snakePartSize * 35;
+    let objectSize = 20;
+    let boardSizeMultiplier = 25;
+    canvas.width = objectSize * boardSizeMultiplier;
+    canvas.height = objectSize * boardSizeMultiplier;
     canvasDiv.appendChild(canvas);
 
     let ctx = canvas.getContext("2d");
-    let snake = new Snake(ctx, canvas.width, canvas.height);
     ctx.fillStyle = "lightgreen";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    let snake = new Snake(canvas, objectSize);
 
 
     let lastMove = MoveEnum.RIGHT;
@@ -24,9 +26,23 @@
         var z = 0;
     }, false);
 
+    let food = null;
+
     let intervalId = setInterval(() => {
         snake.move(lastMove);
-        snake.checkForCollisions(intervalId);
+        snake.checkForCollisions(intervalId, food);
         snake._drawBody();
     }, 100);
+
+    setInterval(() => {
+        if (!Object.is(food, null)) {
+            food.clearFood();
+        }
+        food = new Food(canvas, boardSizeMultiplier, objectSize);
+    }, 3000)
+
+
+    // setTimeout(() => {
+    //     foodArr.pop().clearFood();
+    // }, 2000);
 }   

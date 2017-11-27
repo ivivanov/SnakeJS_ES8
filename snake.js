@@ -5,15 +5,14 @@ let MoveEnum = {
     RIGHT: 3,
 }
 
-
 class Snake {
-    constructor(canvasCtx, canvasWidth, canvasHeight) {
-        this.ctx = canvasCtx;
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
-        this.partSize = 20;
+    constructor(canvas, objectSize) {
+        this.ctx = canvas.getContext("2d");
+        this.canvasWidth = canvas.width;
+        this.canvasHeight = canvas.Height;
+        this.partSize = objectSize;
         this.body = new SnakeBody();
-        this._createDemoBody();
+        this._createStartBody();
     }
 
     move(direction) {
@@ -37,15 +36,20 @@ class Snake {
         this.body.pushfront(newHead);
     }
 
-    checkForCollisions(intervalId) {
+    checkForCollisions(intervalId, food) {
         let head = this.body.head;
         //check if snake body collides with itself
         for (let index = 0; index < this.body.body.length; index++) {
-            if (index == 0) {
-                //skip head
-                continue;
-            }
             const bodyPart = this.body.body[index];
+
+            //check for food collision and eat the food : )
+            if (!Object.is(food, null) &&!food.isEaten && bodyPart[0] == food.position[0] && bodyPart[1] == food.position[1]) {
+                this.body.pushback(this.body.forClear.pop());
+                food.eatFood();
+            }
+
+            if (index == 0) continue; //skip head
+
             if (bodyPart[0] == head[0] && bodyPart[1] == head[1]) {
                 clearInterval(intervalId);
             }
@@ -61,10 +65,10 @@ class Snake {
     }
 
     _drawBody() {
-        let forRemove = this.body.forRemove.pop();
-        while (!Object.is(forRemove, undefined)) {
-            this._clearPart(forRemove[0], forRemove[1]);
-            forRemove = this.body.forRemove.pop();
+        let forClear = this.body.forClear.pop();
+        while (!Object.is(forClear, undefined)) {
+            this._clearPart(forClear[0], forClear[1]);
+            forClear = this.body.forClear.pop();
         }
         for (const part of this.body) {
             this._drawPart(part[0], part[1]);
@@ -81,7 +85,7 @@ class Snake {
         this.ctx.fillRect(x, y, this.partSize, this.partSize);
     }
 
-    _createDemoBody() {
+    _createStartBody() {
         this.body.pushfront([this.partSize, this.partSize]);
         this.body.pushfront([this.partSize, this.partSize * 2]);
         this.body.pushfront([this.partSize, this.partSize * 3]);
